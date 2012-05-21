@@ -12,7 +12,7 @@
         inheritableStatics:{
 
             getAdditionalFetchFields:function () {
-                return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate', 'DirectChildrenCount', 'Children'];
+                return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate', 'DirectChildrenCount', 'Children', 'PortfolioItemType'];
             }
 
         },
@@ -46,51 +46,8 @@
 
                 cardBody.add(percentDoneField);
             }
-			var directChildrenCount = this.getRecord().get('DirectChildrenCount');
-			if (directChildrenCount > 0) {
-				var children = this.getRecord().get('Children');
-				
-				if (directChildrenCount == 1) {
-					var countLabel = 'child';
-				} else {
-					var countLabel = 'children';
-				}
-					
-				cardBody.add({
-	                xtype:'component',
-	                cls:'numberOfChildren',
-	                renderTpl:'{childCount} ' + countLabel,
-					renderData:{
-						childCount:directChildrenCount
-					},
-					listeners: {
-				        click: {
-				        	element: 'el',
-				        	fn: this._headerClicked
-				         },
-				         scope: this
-				     }
-	            });		
-				
-				for (var i = 0; i < children.length; i++) {
-					var child = children[i];
-				    if (child.State) {
-						var state = child.State._refObjectName;
-					} else {
-						var state = 'Not Started';
-					}
-					cardBody.add({
-		                xtype:'component',
-		                cls:'childlabel',
-		                renderTpl:'{childName} ({childState})<br>',
-						renderData:{
-							childName: child._refObjectName,
-							childState: state							
-						}
-		            });		
-					
-				}
-			}
+			cardBody.add(this._childrenRenderer());
+			
 
             var stateChangedDate = this.getRecord().get('StateChangedDate');
             var timeInState = Math.floor((((new Date().getTime()) - stateChangedDate.getTime()) / (1000 * 60 * 60 * 24)));
@@ -115,7 +72,59 @@
             }
 
             return cardBody;
-        }
+        },
+		
+		_childrenRenderer:function() {
+			    var output = Ext.widget('container');
+				var directChildrenCount = this.getRecord().get('DirectChildrenCount');
+				if (directChildrenCount > 0) {
+					var children = this.getRecord().get('Children');
+					var childrenType = children[0].PortfolioItemType._refObjectName;
+						
+					if (directChildrenCount == 1) {
+						var countLabel = childrenType;
+					} else {
+						var countLabel = childrenType + 's';
+					}
+
+					output.add({
+		                xtype:'component',
+		                cls:'numberOfChildren',
+		                renderTpl:'{childCount} ' + countLabel,
+						renderData:{
+							childCount:directChildrenCount
+						},
+						listeners: {
+					        click: {
+					        	element: 'el',
+					        	fn: this._headerClicked
+					         },
+					         scope: this
+					     }
+		            });		
+
+					for (var i = 0; i < children.length; i++) {
+						var child = children[i];
+					    if (child.State) {
+							var state = child.State._refObjectName;
+						} else {
+							var state = 'Not Started';
+						}
+						output.add({
+			                xtype:'component',
+			                cls:'childlabel',
+			                renderTpl:'{childName} ({childState})<br>',
+							renderData:{
+								childName: child._refObjectName,
+								childState: state							
+							}
+			            });		
+
+					}
+				}
+				return output;
+		}
+
 
     });
 
