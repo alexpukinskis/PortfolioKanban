@@ -12,7 +12,7 @@
         inheritableStatics:{
 
             getAdditionalFetchFields:function () {
-                return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate'];
+                return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate', 'DirectChildrenCount', 'Children'];
             }
 
         },
@@ -46,6 +46,46 @@
 
                 cardBody.add(percentDoneField);
             }
+			var directChildrenCount = this.getRecord().get('DirectChildrenCount');
+			if (directChildrenCount > 0) {
+				
+				if (directChildrenCount == 1) {
+					var countLabel = 'child';
+				} else {
+					var countLabel = 'children';
+				}
+					
+				cardBody.add({
+	                xtype:'component',
+	                cls:'numberOfChildren',
+	                renderTpl:'{childCount} ' + countLabel,
+					renderData:{
+						childCount:directChildrenCount
+					},
+					listeners: {
+				        click: {
+				        	element: 'el',
+				        	fn: this._headerClicked
+				         },
+				         scope: this
+				     }
+	            });		
+				
+				var children = this.getRecord().get('Children');
+				for (var i = 0; i < children.length; i++) {
+					var child = children[i];
+				    console.log(child._refObjectName);
+					cardBody.add({
+		                xtype:'component',
+		                cls:'childlabel',
+		                renderTpl:'{childName}<br>',
+						renderData:{
+							childName:child._refObjectName
+						}
+		            });		
+					
+				}
+			}
 
             var stateChangedDate = this.getRecord().get('StateChangedDate');
             var timeInState = Math.floor((((new Date().getTime()) - stateChangedDate.getTime()) / (1000 * 60 * 60 * 24)));
