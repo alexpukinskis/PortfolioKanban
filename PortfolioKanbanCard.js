@@ -80,49 +80,50 @@
 				if (directChildrenCount > 0) {
 					var children = this.getRecord().get('Children');
 					var childrenType = children[0].PortfolioItemType._refObjectName;
-						
-					if (directChildrenCount == 1) {
-						var countLabel = childrenType;
-					} else {
-						var countLabel = childrenType + 's';
-					}
+					
+					var countLabel = Ext.util.Format.plural(directChildrenCount, childrenType);
 
 					output.add({
 		                xtype:'component',
 		                cls:'numberOfChildren',
-		                renderTpl:'{childCount} ' + countLabel,
+		                renderTpl:countLabel,
 						renderData:{
 							childCount:directChildrenCount
 						},
 						listeners: {
 					        click: {
 					        	element: 'el',
-					        	fn: this._headerClicked
+					        	fn: Ext.bind(this._toggleChildrenVisibility, this, [children])
 					         },
 					         scope: this
 					     }
 		            });		
 
-					for (var i = 0; i < children.length; i++) {
-						var child = children[i];
-					    if (child.State) {
-							var state = child.State._refObjectName;
-						} else {
-							var state = 'Not Started';
-						}
-						output.add({
-			                xtype:'component',
-			                cls:'childlabel',
-			                renderTpl:'{childName} ({childState})<br>',
-							renderData:{
-								childName: child._refObjectName,
-								childState: state							
-							}
-			            });		
-
-					}
+					
 				}
 				return output;
+		},
+		
+		_toggleChildrenVisibility:function(children) {
+			for (var i = 0; i < children.length; i++) {
+				var child = children[i];
+			    if (child.State) {
+					var state = child.State._refObjectName;
+				} else {
+					var state = 'Not Started';
+				}
+				console.log(this);
+				this.down('#card').add({
+	                xtype:'component',
+	                cls:'childlabel',
+	                renderTpl:'{childName} ({childState})<br>',
+					renderData:{
+						childName: child._refObjectName,
+						childState: state							
+					}
+	            });		
+
+			}
 		}
 
 
