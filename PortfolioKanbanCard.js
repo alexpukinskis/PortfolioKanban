@@ -48,6 +48,7 @@
             }
 			var directChildrenCount = this.getRecord().get('DirectChildrenCount');
 			if (directChildrenCount > 0) {
+				var children = this.getRecord().get('Children');
 				
 				if (directChildrenCount == 1) {
 					var countLabel = 'child';
@@ -71,16 +72,20 @@
 				     }
 	            });		
 				
-				var children = this.getRecord().get('Children');
 				for (var i = 0; i < children.length; i++) {
 					var child = children[i];
-				    console.log(child._refObjectName);
+				    if (child.State) {
+						var state = child.State._refObjectName;
+					} else {
+						var state = 'Not Started';
+					}
 					cardBody.add({
 		                xtype:'component',
 		                cls:'childlabel',
-		                renderTpl:'{childName}<br>',
+		                renderTpl:'{childName} ({childState})<br>',
 						renderData:{
-							childName:child._refObjectName
+							childName: child._refObjectName,
+							childState: state							
 						}
 		            });		
 					
