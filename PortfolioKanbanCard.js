@@ -46,6 +46,7 @@
 
                 cardBody.add(percentDoneField);
             }
+
 			cardBody.add(this._childrenRenderer());
 			
 
@@ -82,14 +83,12 @@
 					var childrenType = children[0].PortfolioItemType._refObjectName;
 					
 					var countLabel = Ext.util.Format.plural(directChildrenCount, childrenType);
-
+				
 					output.add({
-		                xtype:'component',
+		                xtype:'container',
 		                cls:'numberOfChildren',
+						itemId:'childrenContainer',
 		                renderTpl:countLabel,
-						renderData:{
-							childCount:directChildrenCount
-						},
 						listeners: {
 					        click: {
 					        	element: 'el',
@@ -105,6 +104,14 @@
 		},
 		
 		_toggleChildrenVisibility:function(children) {
+			var childrenContainer = this.down('#childrenContainer')
+			var expanded = childrenContainer.down('.component');
+			if (expanded) {
+				childrenContainer.removeAll();
+				return;
+			}
+			
+			
 			for (var i = 0; i < children.length; i++) {
 				var child = children[i];
 			    if (child.State) {
@@ -113,7 +120,7 @@
 					var state = 'Not Started';
 				}
 				console.log(this);
-				this.down('#card').add({
+				childrenContainer.add({
 	                xtype:'component',
 	                cls:'childlabel',
 	                renderTpl:'{childName} ({childState})<br>',
