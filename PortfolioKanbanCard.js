@@ -81,20 +81,17 @@
 		_childrenRenderer:function() {
 			    var output = Ext.widget('container');
 				var directChildrenCount = this.getRecord().get('DirectChildrenCount');
+				
 				if (directChildrenCount > 0) {  
+				
 					var children = this.getRecord().get('Children');
-					if (children.length > 0) { //then the children are also PIs
-					    var childrenType = children[0].PortfolioItemType._refObjectName;
-					    var countLabel = Ext.util.Format.plural(directChildrenCount, childrenType);
-				    } else {
-				        var countLabel = directChildrenCount + ' user stories';
-				    }
-				    
+					var countLabel = this._buildCountLabel(children);
+				
 					output.add({
 		                xtype:'component',
 		                cls:'numberOfChildren',
 						itemId:'childrenCountContainer',
-		                html:countLabel,
+		                html: countLabel,
 						listeners: {
 					        click: {
 					        	element: 'el',
@@ -111,6 +108,20 @@
 
 				}
 				return output;
+		},
+		
+		_buildCountLabel:function(children) {
+		    if (children.length > 0) { //then the children are also PIs
+    			var childrenType = children[0].PortfolioItemType._refObjectName;
+    			return Ext.util.Format.plural(children.length, childrenType);
+    		} else { //the children are user stories
+    		    if (children.length == 1) {
+    		        return countLabel = '1 user story';
+    		    } else {
+    			    return countLabel = children.length + ' user stories';    
+    		    }
+    		}
+    		
 		},
 		
 		// when label is clicked here is where the work is done to build and display or turn off the child card list
