@@ -88,10 +88,10 @@
 					var countLabel = Ext.util.Format.plural(directChildrenCount, childrenType);
 				
 					output.add({
-		                xtype:'container',
+		                xtype:'component',
 		                cls:'numberOfChildren',
-						itemId:'childrenContainer',
-		                renderTpl:countLabel,
+						itemId:'childrenCountContainer',
+		                html:countLabel,
 						listeners: {
 					        click: {
 					        	element: 'el',
@@ -99,9 +99,13 @@
 					         },
 					         scope: this
 					     }
-		            });		
+		            });	
+		           output.add({
+		                xtype:'container',
+		                cls:'childrenContainer',
+						itemId:'childrenContainer',	
+		            });
 
-					
 				}
 				return output;
 		},
@@ -114,8 +118,7 @@
 				childrenContainer.removeAll();
 				return;
 			}
-			
-			
+				
 			for (var i = 0; i < children.length; i++) {
 				var child = children[i];
 			    if (child.State) {
