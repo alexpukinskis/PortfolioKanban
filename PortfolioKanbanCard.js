@@ -81,12 +81,15 @@
 		_childrenRenderer:function() {
 			    var output = Ext.widget('container');
 				var directChildrenCount = this.getRecord().get('DirectChildrenCount');
-				if (directChildrenCount > 0) {
+				if (directChildrenCount > 0) {  
 					var children = this.getRecord().get('Children');
-					var childrenType = children[0].PortfolioItemType._refObjectName;
-					
-					var countLabel = Ext.util.Format.plural(directChildrenCount, childrenType);
-				
+					if (children.length > 0) { //then the children are also PIs
+					    var childrenType = children[0].PortfolioItemType._refObjectName;
+					    var countLabel = Ext.util.Format.plural(directChildrenCount, childrenType);
+				    } else {
+				        var countLabel = directChildrenCount + ' user stories';
+				    }
+				    
 					output.add({
 		                xtype:'component',
 		                cls:'numberOfChildren',
@@ -124,7 +127,7 @@
 			    if (child.State) {
 					var state = child.State._refObjectName;
 				} else {
-					var state = '<not on board>';
+					var state = 'not on board';
 				}
 				console.log(this);
 				childrenContainer.add({

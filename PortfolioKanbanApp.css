@@ -22,7 +22,7 @@
     border-top-style: dotted;
     border-top-color: #CCC;
     color: #666;
-    margin-top: 5px;
+    margin-top: 0px;
     padding-top: 5px;
 }
 
@@ -52,6 +52,9 @@
 }
 .numberOfChildren {
     margin-top: 5px;
+    padding-bottom:5px;
 	padding-top: 5px;
 	border-top: dotted 1px #ccc;
+	cursor: pointer;
+
 }
