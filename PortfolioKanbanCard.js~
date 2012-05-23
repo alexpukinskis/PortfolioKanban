@@ -47,7 +47,6 @@
                 cardBody.add(percentDoneField);
             }
 
-            // Our new functionalily is created here
 			cardBody.add(this._childrenRenderer());
 			
 
@@ -76,8 +75,6 @@
             return cardBody;
         },
 		
-        
-        // New code added to create child structures in the card
 		_childrenRenderer:function() {
 			    var output = Ext.widget('container');
 				var directChildrenCount = this.getRecord().get('DirectChildrenCount');
@@ -106,7 +103,6 @@
 				return output;
 		},
 		
-		// when label is clicked here is where the work is done to build and display or turn off the child card list
 		_toggleChildrenVisibility:function(children) {
 			var childrenContainer = this.down('#childrenContainer')
 			var expanded = childrenContainer.down('.component');
@@ -121,7 +117,7 @@
 			    if (child.State) {
 					var state = child.State._refObjectName;
 				} else {
-					var state = '<not on board>';
+					var state = 'Not Started';
 				}
 				console.log(this);
 				childrenContainer.add({
