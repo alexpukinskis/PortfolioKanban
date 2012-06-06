@@ -139,12 +139,14 @@
 				} else {
 					var state = 'not on board';
 				}
+				var childURL = Rally.util.Navigation.createRallyDetailUrl(child);
 				childrenContainer.add({
 	                xtype:'component',
 	                cls:'childlabel',
-	                renderTpl: '{childName} ({childState})<br>',
+	                renderTpl: '<a href="{childURL}" target="_top">{childName}</a> ({childState})<br>',
 					renderData:{
 						childName: child._refObjectName,
+						childURL: childURL,
 						childState: state							
 					}
 	            });		
