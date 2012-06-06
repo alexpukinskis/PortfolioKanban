@@ -90,7 +90,7 @@
 		                xtype:'component',
 		                cls:'numberOfChildren',
 						itemId:'childrenCountContainer',
-		                html: this._buildCountLabel(children),
+		                html: this._buildCountLabel(children, directChildrenCount),
 						listeners: {
 					        click: {
 					        	element: 'el',
@@ -109,7 +109,7 @@
 				return output;
 		},
 		
-		_buildCountLabel:function(children) {
+		_buildCountLabel:function(children, directChildrenCount) {
 		    if (children.length > 0) { //then the children are also PIs
     			var childrenType = children[0].PortfolioItemType._refObjectName;
     			return Ext.util.Format.plural(children.length, childrenType);
@@ -117,7 +117,7 @@
     		    if (children.length == 1) {
     		        return countLabel = '1 user story';
     		    } else {
-    			    return countLabel = children.length + ' user stories';    
+    			    return countLabel = directChildrenCount + ' user stories';    
     		    }
     		}
     		
