@@ -85,13 +85,12 @@
 				if (directChildrenCount > 0) {  
 				
 					var children = this.getRecord().get('Children');
-					var countLabel = this._buildCountLabel(children);
 				
 					output.add({
 		                xtype:'component',
 		                cls:'numberOfChildren',
 						itemId:'childrenCountContainer',
-		                html: countLabel,
+		                html: this._buildCountLabel(children),
 						listeners: {
 					        click: {
 					        	element: 'el',
@@ -140,11 +139,10 @@
 				} else {
 					var state = 'not on board';
 				}
-				console.log(this);
 				childrenContainer.add({
 	                xtype:'component',
 	                cls:'childlabel',
-	                renderTpl:'{childName} ({childState})<br>',
+	                renderTpl: '{childName} ({childState})<br>',
 					renderData:{
 						childName: child._refObjectName,
 						childState: state							

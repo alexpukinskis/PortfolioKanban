@@ -22,7 +22,7 @@
     border-top-style: dotted;
     border-top-color: #CCC;
     color: #666;
-    margin-top: 0px;
+    margin-top: 5px;
     padding-top: 5px;
 }
 
@@ -45,14 +45,14 @@
 .portfolio-kanban .headerSpacer {
 
 }
-.childlabel {
+.childlabel {  
 	font-size: 10px;
 	color: #666;
 	margin: 5px;
 }
 .numberOfChildren {
     margin-top: 5px;
-    padding-bottom:5px;
+    padding-bottom:0px;
 	padding-top: 5px;
 	border-top: dotted 1px #ccc;
 	cursor: pointer;
