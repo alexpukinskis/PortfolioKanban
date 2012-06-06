@@ -1,0 +1,7 @@
+
+
+* Fix scrollbar issue so that longer sets of cards can be seen
+* Create identical behavior for user stories that are children of enhancements (show list of clickable links) as child PIs have
+* Click through on a PI to see a board containing just it's children
+
+
