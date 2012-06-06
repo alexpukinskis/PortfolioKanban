@@ -47,6 +47,7 @@
                 cardBody.add(percentDoneField);
             }
 
+            // Our new functionalily is created here
 			cardBody.add(this._childrenRenderer());
 			
 
@@ -75,20 +76,21 @@
             return cardBody;
         },
 		
+        
+        // New code added to create child structures in the card
 		_childrenRenderer:function() {
 			    var output = Ext.widget('container');
 				var directChildrenCount = this.getRecord().get('DirectChildrenCount');
-				if (directChildrenCount > 0) {
+				
+				if (directChildrenCount > 0) {  
+				
 					var children = this.getRecord().get('Children');
-					var childrenType = children[0].PortfolioItemType._refObjectName;
-					
-					var countLabel = Ext.util.Format.plural(directChildrenCount, childrenType);
 				
 					output.add({
-		                xtype:'container',
+		                xtype:'component',
 		                cls:'numberOfChildren',
-						itemId:'childrenContainer',
-		                renderTpl:countLabel,
+						itemId:'childrenCountContainer',
+		                html: this._buildCountLabel(children),
 						listeners: {
 					        click: {
 					        	element: 'el',
@@ -96,13 +98,32 @@
 					         },
 					         scope: this
 					     }
-		            });		
+		            });	
+		           output.add({
+		                xtype:'container',
+		                cls:'childrenContainer',
+						itemId:'childrenContainer',	
+		            });
 
-					
 				}
 				return output;
 		},
 		
+		_buildCountLabel:function(children) {
+		    if (children.length > 0) { //then the children are also PIs
+    			var childrenType = children[0].PortfolioItemType._refObjectName;
+    			return Ext.util.Format.plural(children.length, childrenType);
+    		} else { //the children are user stories
+    		    if (children.length == 1) {
+    		        return countLabel = '1 user story';
+    		    } else {
+    			    return countLabel = children.length + ' user stories';    
+    		    }
+    		}
+    		
+		},
+		
+		// when label is clicked here is where the work is done to build and display or turn off the child card list
 		_toggleChildrenVisibility:function(children) {
 			var childrenContainer = this.down('#childrenContainer')
 			var expanded = childrenContainer.down('.component');
@@ -110,20 +131,18 @@
 				childrenContainer.removeAll();
 				return;
 			}
-			
-			
+				
 			for (var i = 0; i < children.length; i++) {
 				var child = children[i];
 			    if (child.State) {
 					var state = child.State._refObjectName;
 				} else {
-					var state = 'Not Started';
+					var state = 'not on board';
 				}
-				console.log(this);
 				childrenContainer.add({
 	                xtype:'component',
 	                cls:'childlabel',
-	                renderTpl:'{childName} ({childState})<br>',
+	                renderTpl: '{childName} ({childState})<br>',
 					renderData:{
 						childName: child._refObjectName,
 						childState: state							
