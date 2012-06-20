@@ -12,7 +12,7 @@
         inheritableStatics:{
 
             getAdditionalFetchFields:function () {
-                return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate', 'DirectChildrenCount', 'Children', 'PortfolioItemType'];
+                return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate', 'DirectChildrenCount', 'Children', 'PortfolioItemType', 'UserStories'];
             }
 
         },
@@ -84,10 +84,7 @@
 				
 				if (directChildrenCount > 0) {  
 					
-					this.children = this.getRecord().get('Children');
-					if (this.children.length != directChildrenCount) {
-						this.children = this.getRecord().get('UserStories');
-					} 
+					this._specifyChildrenCollection();
 					output.add({
 		                xtype:'component',
 		                cls:'numberOfChildren',
@@ -111,18 +108,28 @@
 				return output;
 		},
 		
+		_specifyChildrenCollection:function() {
+		  	if (this.getRecord().get('Children').length > 0) {
+	            this.children = this.getRecord().get('Children');
+		  	} else {
+				this.children = this.getRecord().get('UserStories');		  	    
+		  	}		  
+		},
+		
+		_childrenTypeLabel:function() {
+		    if (this.children[0].PortfolioItemType) {
+		        return this.children[0].PortfolioItemType._refObjectName;
+		    } else {
+		        if (this.children.length == 1) {
+		            return 'user story';
+		        } else {
+		            return 'user storie'; // Ext pluralize is dumb
+		        }
+		    }
+		},
+		
 		_buildCountLabel:function(directChildrenCount) {
-		    if (this.children.length > 0) { //then the children are also PIs
-    			var childrenType = this.children[0].PortfolioItemType._refObjectName;
-    			return Ext.util.Format.plural(this.children.length, childrenType);
-    		} else { //the children are user stories
-    		    if (this.children.length == 1) {
-    		        return countLabel = '1 user story';
-    		    } else {
-    			    return countLabel = directChildrenCount + ' user stories';    
-    		    }
-    		}
-    		
+    		return Ext.util.Format.plural(this.children.length, this._childrenTypeLabel());
 		},
 		
 		// when label is clicked here is where the work is done to build and display or turn off the child card list
@@ -133,34 +140,32 @@
 				this.childrenContainer.removeAll();
 				return;
 			}
-			
 			this._renderChildren();
-
 		},
 		
 		
 		// 
 		_renderChildren:function() {
 				for (var i = 0; i < this.children.length; i++) {
-				var child = this.children[i];
-			    if (child.State) {
-					var state = child.State._refObjectName;
-				} else {
-					var state = 'not on board';
-				}
-				var childURL = Rally.util.Navigation.createRallyDetailUrl(child);
-				this.childrenContainer.add({
-	                xtype:'component',
-	                cls:'childlabel',
-	                renderTpl: '<a href="{childURL}" target="_top">{childName}</a> ({childState})<br>',
-					renderData:{
-						childName: child._refObjectName,
-						childURL: childURL,
-						childState: state							
-					}
-	            });		
-
-	    }}
+			    	var child = this.children[i];
+    			    if (child.State) {
+    					var state = child.State._refObjectName;
+    				} else {
+    					var state = 'not on board';
+    				}
+    				var childURL = Rally.util.Navigation.createRallyDetailUrl(child);
+    				this.childrenContainer.add({
+    	                xtype:'component',
+    	                cls:'childlabel',
+    	                renderTpl: '<a href="{childURL}" target="_top">{childName}</a> ({childState})<br>',
+    					renderData:{
+    						childName: child._refObjectName,
+    						childURL: childURL,
+    						childState: state							
+    					}
+    	            });		
+	            }
+	    }
 
     });
 
