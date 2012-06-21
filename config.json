@@ -4,7 +4,8 @@
     "sdk":"2.0p",
     "javascript":[
         "PortfolioKanbanCard.js",
-        "PortfolioKanbanApp.js"
+        "PortfolioKanbanApp.js",
+		"RelatedItemsSummarizer.js"
     ],
     "css":[
         "PortfolioKanbanApp.css"
