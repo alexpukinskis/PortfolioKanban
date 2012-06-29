@@ -15,10 +15,10 @@
         
         constructor:function(config){
             this.callParent(arguments);
-            this.add( this._childrenRenderer());
+            this.add( this._summaryRenderer());
         },
         
-        _childrenRenderer:function() {
+        _summaryRenderer:function() {
 			    var output = Ext.widget('container');
 				var directChildrenCount = this.getRecord().get('DirectChildrenCount');
 				if (directChildrenCount > 0) {  

@@ -1,7 +1,8 @@
 
 
 * Fix scrollbar issue so that longer sets of cards can be seen
-* Create identical behavior for user stories that are children of enhancements (show list of clickable links) as child PIs have
+* Correctly use passed in object name (such as 'Children') to determine what to display
+   goal is to use this generally for tasks and defect
 * Click through on a PI to see a board containing just it's children
 
 
