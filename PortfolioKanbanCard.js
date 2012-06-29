@@ -14,7 +14,7 @@
             getAdditionalFetchFields:function () {
                 return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate', 
                 'DirectChildrenCount', 'Children', 'PortfolioItemType', 'UserStories',
-                'ScheduleState'];
+                'ScheduleState', 'Parent'];
             }
 
         },
@@ -32,12 +32,21 @@
                 cls:'cardContent'
             });
 
-            cardBody.add({
+             
+             cardBody.add({
                 xtype: 'rallyfieldrenderer',
                 field: this.getRecord().getField('_refObjectName'),
                 record: this.getRecord()
             });
 
+             cardBody.add({
+                xtype: 'rallyfieldrenderer',
+                cls: 'cardParent',
+                field: this.getRecord().getField('Parent'),
+                record: this.getRecord()
+            });
+
+             
             var percentDoneByStoryCount = this.getRecord().get('PercentDoneByStoryCount');
 
             if (percentDoneByStoryCount > 0) {
@@ -49,6 +58,8 @@
                 cardBody.add(percentDoneField);
             }
 
+           
+            
         	cardBody.add({
 			    xtype: 'relateditemssummarizer',
 			    field:this.getRecord().getField('Children'),
