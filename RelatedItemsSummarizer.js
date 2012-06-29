@@ -15,10 +15,10 @@
         
         constructor:function(config){
             this.callParent(arguments);
-            this.add( this._summaryRenderer());
+            this._renderSummary();
         },
         
-        _summaryRenderer:function() {
+        _renderSummary:function() {
 			    var output = Ext.widget('container');
 				var directChildrenCount = this.getRecord().get('DirectChildrenCount');
 				if (directChildrenCount > 0) {  
@@ -44,7 +44,7 @@
 		            });
 
 				}
-				return output;
+				this.add(output);
 		},
 
 		_specifyChildrenCollection:function() {
@@ -89,6 +89,8 @@
 			    	var child = this.children[i];
     			    if (child.State) {
     					var state = child.State._refObjectName;
+    				} else if (child.ScheduleState) {
+    					var state = child.ScheduleState;
     				} else {
     					var state = 'not on board';
     				}

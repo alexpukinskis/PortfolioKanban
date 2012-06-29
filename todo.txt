@@ -4,5 +4,7 @@
 * Correctly use passed in object name (such as 'Children') to determine what to display
    goal is to use this generally for tasks and defect
 * Click through on a PI to see a board containing just it's children
+* Figure out correct custom field for Kanban Column and display that. (AP: this would be great SDK component)
+
 
 

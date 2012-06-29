@@ -12,7 +12,9 @@
         inheritableStatics:{
 
             getAdditionalFetchFields:function () {
-                return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate', 'DirectChildrenCount', 'Children', 'PortfolioItemType', 'UserStories'];
+                return ['Owner', 'FormattedID', 'PercentDoneByStoryCount', 'StateChangedDate', 
+                'DirectChildrenCount', 'Children', 'PortfolioItemType', 'UserStories',
+                'ScheduleState'];
             }
 
         },
