@@ -9,7 +9,7 @@
         extend:'Rally.app.App',
         layout:'auto',
         appName:'Portfolio Kanban',
-
+        autoScroll: 'true',
         cls:'portfolio-kanban',
 
         items:[
